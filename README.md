@@ -25,14 +25,27 @@ Development builds from `main`: `https://mrx-31415.github.io/stash-incognito/dev
 
 Incognito was developed in [stash-curator](https://github.com/mrx-31415/stash-curator)
 until 1.0.1; references like `mrx-31415/stash-curator#478` in the history point there.
-Its end-to-end test against a real Stash, with Curator installed beside it, stays in
+Its test with Curator installed beside it (Curator records nothing either) stays in
 stash-curator (`tests/integration/test_incognito.py`).
 
 ```bash
-python -m pytest tests          # needs pytest and node
+python -m pytest tests --ignore=tests/integration   # unit tests; needs pytest and node
 python scripts/build.py         # dist/incognito.zip and dist/incognito-index.yml
 python scripts/build.py --dev   # the dev source in dist/dev/
 ```
+
+The integration tests run the built plugin in a throwaway Stash (Docker), play a
+synthetic clip through Stash's own player with Playwright, and check both the
+tracking requests and what Stash recorded:
+
+```bash
+pip install -r tests/integration/requirements.txt && playwright install chromium
+scripts/integration                                  # against stashapp/stash:v0.31.1
+STASH_IMAGE=stashapp/stash:latest scripts/integration
+```
+
+`KEEP_STASH=1` leaves the Stash running afterwards. CI runs them against v0.31.1 and
+`latest`.
 
 Commits follow [Conventional Commits](https://www.conventionalcommits.org/):
 release-please bumps `version:` in `incognito/incognito.yml`, updates
