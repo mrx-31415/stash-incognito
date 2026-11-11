@@ -1,0 +1,15 @@
+{
+  "packages": {
+    "incognito": {
+      "release-type": "simple",
+      "component": "incognito",
+      "include-component-in-tag": true,
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "incognito.yml"
+        }
+      ]
+    }
+  }
+}
